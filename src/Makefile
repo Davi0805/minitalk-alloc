@@ -23,6 +23,8 @@ clean:
 
 fclean: clean
 	rm -rf $(NAME)
+	rm -f client
+	rm -f server
 	cd $(LIBFTDIR) && make fclean
 
 re: fclean all

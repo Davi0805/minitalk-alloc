@@ -76,7 +76,7 @@ void handle_sigusr_client(int signum, siginfo_t *info, void *context)
 
     if (signum == SIGUSR1)
     {
-        ft_log(LOG, "Bit recebido!");
+        /* ft_log(LOG, "Bit recebido!"); */
     }
     else if (signum == SIGUSR2)
     {
@@ -89,7 +89,7 @@ int main(int ac, char **av)
     if (ac != 3)
 		ft_log(ERRO, "Numero insuficiente de argumentos!");
 
-	int server_pid = atoi(av[1]);
+	int server_pid = ft_atoi(av[1]);
 	int number = ft_strlen(av[2]);
     struct sigaction	sig_config;
 

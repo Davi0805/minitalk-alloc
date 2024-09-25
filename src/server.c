@@ -26,23 +26,19 @@ void str_size(int signum, siginfo_t *info, data_buffer *buffer, int *bit_count)
 
 void str_parse(int signum, siginfo_t *info, data_buffer *buffer, int *bit_count)
 {
-	//DESENVOLVER RESTO DA STR PARSE
 	if (signum == SIGUSR1)
 		buffer->c = (buffer->c << 1) | 0;
 	else if (signum == SIGUSR2)
 		buffer->c = (buffer->c << 1) | 1;
-
 	(*bit_count)++;
 	kill(info->si_pid, SIGUSR1);
-
 	if (*bit_count == (sizeof(char) * 8))
     {
-		ft_printf("Charcater %c\n", buffer->c);
+		/* ft_printf("Charcater %c\n", buffer->c); */
         buffer->str[buffer->str_index] = buffer->c;
         buffer->str_index++;
         *bit_count = 0;
         buffer->c = 0;
-
         if (buffer->str[buffer->str_index - 1] == '\0')
         {
             ft_printf("[STRING]:  %s\n", buffer->str);
