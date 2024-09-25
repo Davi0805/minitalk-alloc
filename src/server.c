@@ -12,6 +12,7 @@ void str_size(int signum, siginfo_t *info, data_buffer *buffer, int *bit_count)
 			buffer->size = (buffer->size << 1) | 1;
 		}
 		(*bit_count)++;
+		kill(info->si_pid, SIGUSR1);
 
 
 	if (*bit_count == (sizeof(unsigned int) * 8))
@@ -19,20 +20,12 @@ void str_size(int signum, siginfo_t *info, data_buffer *buffer, int *bit_count)
 		ft_printf("[SIZE OF STRING]:  %u\n", buffer->size);
 		*bit_count = 0;
 		buffer->flag = 1;
-		kill(info->si_pid, SIGUSR1);
+		/* kill(info->si_pid, SIGUSR1); */
 	}
 }
 
-void str_parse(int signum, data_buffer *buffer, int *bit_count)
+void str_parse(int signum, siginfo_t *info, data_buffer *buffer, int *bit_count)
 {
-/* 	if (buffer->flag == 1)
-	{
-		buffer->str = ft_calloc((buffer->size + 1), sizeof(char));
-		if (buffer->str == NULL)
-			ft_log(ERRO, "Falha ao alocar a string! | Failed to allocate string!");
-		buffer->flag = 2;
-	} */
-
 	//DESENVOLVER RESTO DA STR PARSE
 	if (signum == SIGUSR1)
 		buffer->c = (buffer->c << 1) | 0;
@@ -40,25 +33,8 @@ void str_parse(int signum, data_buffer *buffer, int *bit_count)
 		buffer->c = (buffer->c << 1) | 1;
 
 	(*bit_count)++;
+	kill(info->si_pid, SIGUSR1);
 
-	/* if((*bit_count == (sizeof(char) * 8)) && buffer->c == '\0')
-	{
-		buffer->str[buffer->str_index] = buffer->c;
-		ft_printf("[STRING]:  %s\n", buffer->str);
-		free(buffer->str);
-		*bit_count = 0;
-		buffer->flag = 0;
-		buffer->c = 0;
-		buffer->str_index = 0;
-		buffer->size = 0;
-	}
-	else if(*bit_count == (sizeof(char) * 8))
-	{
-		buffer->str[buffer->str_index] = buffer->c;
-		*bit_count = 0;
-		buffer->str_index++;
-		buffer->c = 0;
-	} */
 	if (*bit_count == (sizeof(char) * 8))
     {
 		ft_printf("Charcater %c\n", buffer->c);
@@ -75,6 +51,8 @@ void str_parse(int signum, data_buffer *buffer, int *bit_count)
             buffer->str_index = 0;
             buffer->size = 0;
 			buffer->c = 0;
+			buffer->str = NULL;
+			kill(info->si_pid, SIGUSR2);
         }
     }
 }
@@ -126,7 +104,7 @@ void handle_sigusr(int signum, siginfo_t *info, void *context)
 		buffer.flag = 2;
 	}
 	else if (buffer.flag == 2)
-		str_parse(signum, &buffer, &bit_count);
+		str_parse(signum, info, &buffer, &bit_count);
 	
 		
 }

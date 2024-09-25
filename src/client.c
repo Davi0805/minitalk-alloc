@@ -22,7 +22,8 @@ void send_number_32bit(int pid, int number)
                 ft_log(ERRO, "Failed to send SIGUSR1 | Falha ao enviar SIGUSR1");
             }
         }
-        usleep(3000); // Small delay to ensure signal is processed
+        /* usleep(3000);  */
+        pause();
         bit_count--;
     }
 }
@@ -50,7 +51,8 @@ void send_char(int pid, char c)
                 ft_log(ERRO, "Failed to send SIGUSR1 | Falha ao enviar SIGUSR1");
             }
         }
-        usleep(3000);
+        /* usleep(3000); */
+        pause();
         bit_count--;
     }
 }
@@ -68,9 +70,13 @@ void send_string(int pid, char *str)
 
 void handle_sigusr_client(int signum, siginfo_t *info, void *context)
 {
+
+    (void)context;
+    (void)info;
+
     if (signum == SIGUSR1)
     {
-        ft_log(LOG, "Strlen recebido!");
+        ft_log(LOG, "Bit recebido!");
     }
     else if (signum == SIGUSR2)
     {
@@ -80,6 +86,9 @@ void handle_sigusr_client(int signum, siginfo_t *info, void *context)
 
 int main(int ac, char **av)
 {
+    if (ac != 3)
+		ft_log(ERRO, "Numero insuficiente de argumentos!");
+
 	int server_pid = atoi(av[1]);
 	int number = ft_strlen(av[2]);
     struct sigaction	sig_config;
@@ -92,14 +101,14 @@ int main(int ac, char **av)
 
 	ft_printf("Tamanho da string = %u\n", number);
 
-	if (ac != 3)
-		ft_log(ERRO, "Numero insuficiente de argumentos!");
-
+	
 	send_number_32bit(server_pid, number);
 
     usleep(3000);
 
     send_string(server_pid, av[2]);
+
+    pause();
 
 	return (0);
 }
