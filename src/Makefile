@@ -17,14 +17,18 @@ $(NAME): makelibft
 		$(CC) client.c -o client $(SRCS) $(NAME)
 		$(CC) server.c -o server $(SRCS) $(NAME)
 
+bonus: $(NAME)
+	$(CC) client_bonus.c -o client_bonus $(SRCS) $(NAME)
+	$(CC) server_bonus.c -o server_bonus $(SRCS) $(NAME)
+
 clean:
 	rm -f *.o
 	cd $(LIBFTDIR) && make clean
 
 fclean: clean
 	rm -rf $(NAME)
-	rm -f client
-	rm -f server
+	rm -f client client_bonus
+	rm -f server server_bonus
 	cd $(LIBFTDIR) && make fclean
 
 re: fclean all
