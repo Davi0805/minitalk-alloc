@@ -6,7 +6,7 @@
 /*   By: dmelo-ca <dmelo-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:41:35 by dmelo-ca          #+#    #+#             */
-/*   Updated: 2024/09/27 14:13:12 by dmelo-ca         ###   ########.fr       */
+/*   Updated: 2024/10/07 14:36:52 by dmelo-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	str_parse(int signum, siginfo_t *info,
 			buffer->size = 0;
 			buffer->c = 0;
 			buffer->str = NULL;
-			kill(info->si_pid, SIGUSR2);
 		}
 	}
 }

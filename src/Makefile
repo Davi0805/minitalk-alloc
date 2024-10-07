@@ -3,23 +3,33 @@ CC = cc
 LIBFTNAME = libftprintf.a
 LIBFTDIR = ../print_functions
 FLAGS = -Wall -Wextra -Werror
-
+OBJS = $(SRCS:.c=.o)
 SRCS = utils.c \
 
-all: $(NAME)
+all: client server
 
-makelibft:
+$(NAME): $(LIBFTDIR)/$(LIBFTNAME)
+		cp $(LIBFTDIR)/$(LIBFTNAME) $(NAME)
+
+$(LIBFTDIR)/$(LIBFTNAME):
 		make -C $(LIBFTDIR)
-		cp $(LIBFTDIR)/$(LIBFTNAME) .
-		mv $(LIBFTNAME) $(NAME)
 
-$(NAME): makelibft
-		$(CC) client.c -o client $(SRCS) $(NAME)
-		$(CC) server.c -o server $(SRCS) $(NAME)
+server: $(NAME) server.o $(OBJS)
+		$(CC) $(FLAGS) server.o -o server $(OBJS) $(NAME)
 
-bonus: $(NAME)
-	$(CC) client_bonus.c -o client_bonus $(SRCS) $(NAME)
-	$(CC) server_bonus.c -o server_bonus $(SRCS) $(NAME)
+client: $(NAME) client.o $(OBJS)
+		$(CC) $(FLAGS) client.o -o client $(OBJS) $(NAME)
+
+client_bonus: $(NAME) client_bonus.o $(OBJS)
+		$(CC) $(FLAGS) client_bonus.o -o client_bonus $(OBJS) $(NAME)
+
+server_bonus: $(NAME) server_bonus.o $(OBJS)
+		$(CC) $(FLAGS) server_bonus.o -o server_bonus $(OBJS) $(NAME)
+
+bonus: $(NAME) server_bonus client_bonus $(OBJS)
+
+%.o: %.c
+		$(CC) $(FLAGS) -c $< -o $@
 
 clean:
 	rm -f *.o

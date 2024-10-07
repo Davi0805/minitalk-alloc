@@ -6,7 +6,7 @@
 /*   By: dmelo-ca <dmelo-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:56:40 by dmelo-ca          #+#    #+#             */
-/*   Updated: 2024/09/29 15:51:48 by dmelo-ca         ###   ########.fr       */
+/*   Updated: 2024/10/07 14:44:53 by dmelo-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	send_number_32bit(int pid, int number)
 			}
 		}
 		pause();
-		usleep(100);
+/* 		usleep(100); */
 		bit_count--;
 	}
 }
@@ -65,6 +65,7 @@ void	send_char(int pid, char c)
 			}
 		}
 		pause();
+/* 		usleep(100); */
 		bit_count--;
 	}
 }
@@ -105,6 +106,5 @@ int	main(int ac, char **av)
 	send_number_32bit(server_pid, number);
 	usleep(3000);
 	send_string(server_pid, av[2]);
-	pause();
 	return (0);
 }
