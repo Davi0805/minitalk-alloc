@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: davi <davi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dmelo-ca <dmelo-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:56:40 by dmelo-ca          #+#    #+#             */
-/*   Updated: 2024/11/07 20:49:51 by davi             ###   ########.fr       */
+/*   Updated: 2024/11/08 15:44:31 by dmelo-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	send_number_32bit(int pid, int number)
 		usleep(DELAY);
 		bit_count--;
 	}
-	/* pause(); */
 }
 
 void	send_char(int pid, char c)
@@ -53,7 +52,6 @@ void	send_char(int pid, char c)
 			if (kill(pid, SIGUSR2) == -1)
 			{
 				perror("kill");
-				/* ft_log(ERRO, "Failed to send SIGUSR2"); */
 			}
 		}
 		else
@@ -61,13 +59,11 @@ void	send_char(int pid, char c)
 			if (kill(pid, SIGUSR1) == -1)
 			{
 				perror("kill");
-				/* ft_log(ERRO, "Failed to send SIGUSR1"); */
 			}
 		}
 		usleep(DELAY);
 		bit_count--;
 	}
-	/* pause(); */
 }
 
 void	send_string(int pid, char *str, int number)
@@ -106,9 +102,6 @@ int	main(int ac, char **av)
 	sig_config.sa_sigaction = handle_sigusr_client;
 	sigemptyset(&sig_config.sa_mask);
 	sigaction_check(&sig_config);
-	/* ft_printf("Tamanho da string = %u\n", number); */
-	/* send_number_32bit(server_pid, number); */
-	/* usleep(10000); */
 	send_string(server_pid, av[2], number);
 	return (0);
 }

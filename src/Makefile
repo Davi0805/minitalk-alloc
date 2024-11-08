@@ -23,8 +23,8 @@ $(LIBFTDIR)/$(LIBFTNAME):
 
 mandatory: $(NAME) $(OBJS)
 	@echo "# $(GREEN)Building project...$(NC)"
-	@$(CC) $(FLAGS) -o client client.o utils.o $(NAME)
-	@$(CC) $(FLAGS) -o server server.o utils.o $(NAME)
+	@$(CC) $(FLAGS) -fsanitize=undefined -o client client.o utils.o $(NAME)
+	@$(CC) $(FLAGS) -fsanitize=undefined -o server server.o utils.o $(NAME)
 	@echo "$(GREEN)Done!$(NC)"
 
 %.o: %.c

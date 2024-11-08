@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: davi <davi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dmelo-ca <dmelo-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:41:35 by dmelo-ca          #+#    #+#             */
-/*   Updated: 2024/11/07 20:42:42 by davi             ###   ########.fr       */
+/*   Updated: 2024/11/08 16:09:15 by dmelo-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static char *str_global;
+static char	*g_str;
 
 void	str_size(int signum, siginfo_t *info,
 				t_data_buffer *buffer, int *bit_count)
@@ -25,7 +25,6 @@ void	str_size(int signum, siginfo_t *info,
 	(*bit_count)++;
 	if (*bit_count == (sizeof(unsigned int) * 8))
 	{
-		/* kill(info->si_pid, SIGUSR1); */
 		ft_printf("[SIZE OF STRING]:  %u\n", buffer->size);
 		*bit_count = 0;
 		buffer->flag = 1;
@@ -43,26 +42,20 @@ void	str_parse(int signum, siginfo_t *info,
 	(*bit_count)++;
 	if (*bit_count == (sizeof(char) * 8))
 	{
-		/* kill(info->si_pid, SIGUSR1); */
-		/* buffer->str[buffer->str_index] = buffer->c; */
-		str_global[buffer->str_index] = buffer->c;
+		g_str[buffer->str_index] = buffer->c;
 		buffer->str_index++;
 		*bit_count = 0;
 		buffer->c = 0;
-		/* if (buffer->str[buffer->str_index - 1] == '\0') */
-		if (str_global[buffer->str_index - 1] == '\0')
+		if (g_str[buffer->str_index - 1] == '\0')
 		{
 			usleep(100);
-			/* ft_printf("[STRING]:  %s\n", buffer->str); */
-			ft_printf("[STRING]:  %s\n", str_global);
-			/* free(buffer->str); */
-			free(str_global);
+			ft_printf("[STRING]:  %s\n", g_str);
+			free(g_str);
 			buffer->flag = 0;
 			buffer->str_index = 0;
 			buffer->size = 0;
 			buffer->c = 0;
-			/* buffer->str = NULL; */
-			str_global = NULL;
+			g_str = NULL;
 		}
 	}
 }
@@ -75,13 +68,10 @@ void	handle_sigusr(int signum, siginfo_t *info, void *context)
 	(void)context;
 	if (buffer.flag == 0)
 		str_size(signum, info, &buffer, &bit_count);
-	/* if (buffer.flag == 1 && buffer.str == NULL) */
-	if (buffer.flag == 1 && str_global == NULL)
+	if (buffer.flag == 1 && g_str == NULL)
 	{
-		/* buffer.str = ft_calloc((buffer.size + 1), sizeof(char)); */
-		str_global = ft_calloc((buffer.size + 1), sizeof(char));
-		/* if (buffer.str == NULL) */
-		if (str_global == NULL)
+		g_str = ft_calloc((buffer.size + 1), sizeof(char));
+		if (g_str == NULL)
 			ft_log(ERRO,
 				"Falha ao alocar a string! | Failed to allocate string!");
 		buffer.flag = 2;
