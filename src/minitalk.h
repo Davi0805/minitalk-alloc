@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minitalk.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelo-ca <dmelo-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: davi <davi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 15:30:22 by dmelo-ca          #+#    #+#             */
-/*   Updated: 2024/09/27 14:12:41 by dmelo-ca         ###   ########.fr       */
+/*   Updated: 2024/11/07 20:49:06 by davi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # define LOG 0
 # define ERRO 1
+
+# define DELAY 3000
 
 //FLAG: 0 = SEM STRLEN | 1 = COM STRLEN | 2 = ALOCACAO CONCLUIDA
 
@@ -26,11 +28,10 @@
 
 typedef struct s_buffer
 {
+	unsigned int	str_index;
 	int				flag;
 	int				size;
-	char			*str;
 	char			c;
-	unsigned int	str_index;
 }					t_data_buffer;
 
 void	ft_log(int flag, char *str);

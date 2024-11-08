@@ -1,45 +1,46 @@
+MAKEFLAGS += -s
+
 NAME = libft.a
 CC = cc
 LIBFTNAME = libftprintf.a
 LIBFTDIR = ../print_functions
 FLAGS = -Wall -Wextra -Werror
 OBJS = $(SRCS:.c=.o)
-SRCS = utils.c \
+SRCS = server.c client.c utils.c\
 
-all: client server
+GREEN = \033[0;32m
+YELLOW = \033[1;33m
+RED = \033[0;31m
+NC = \033[0m
+
+all: mandatory
 
 $(NAME): $(LIBFTDIR)/$(LIBFTNAME)
-		cp $(LIBFTDIR)/$(LIBFTNAME) $(NAME)
+	@cp $(LIBFTDIR)/$(LIBFTNAME) $(NAME)
 
 $(LIBFTDIR)/$(LIBFTNAME):
-		make -C $(LIBFTDIR)
+	@make -C $(LIBFTDIR)
 
-server: $(NAME) server.o $(OBJS)
-		$(CC) $(FLAGS) server.o -o server $(OBJS) $(NAME)
-
-client: $(NAME) client.o $(OBJS)
-		$(CC) $(FLAGS) client.o -o client $(OBJS) $(NAME)
-
-client_bonus: $(NAME) client_bonus.o $(OBJS)
-		$(CC) $(FLAGS) client_bonus.o -o client_bonus $(OBJS) $(NAME)
-
-server_bonus: $(NAME) server_bonus.o $(OBJS)
-		$(CC) $(FLAGS) server_bonus.o -o server_bonus $(OBJS) $(NAME)
-
-bonus: $(NAME) server_bonus client_bonus $(OBJS)
+mandatory: $(NAME) $(OBJS)
+	@echo "# $(GREEN)Building project...$(NC)"
+	@$(CC) $(FLAGS) -o client client.o utils.o $(NAME)
+	@$(CC) $(FLAGS) -o server server.o utils.o $(NAME)
+	@echo "$(GREEN)Done!$(NC)"
 
 %.o: %.c
-		$(CC) $(FLAGS) -c $< -o $@
+	@$(CC) $(FLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o
-	cd $(LIBFTDIR) && make clean
+	@rm -f *.o
+	@cd $(LIBFTDIR) && make clean
+	@echo "# $(YELLOW)Cleaning...$(NC)"
 
 fclean: clean
-	rm -rf $(NAME)
-	rm -f client client_bonus
-	rm -f server server_bonus
-	cd $(LIBFTDIR) && make fclean
+	@rm -rf $(NAME)
+	@rm -f client
+	@rm -f server
+	@cd $(LIBFTDIR) && make fclean
+	@echo "# $(RED)Fully Cleaned!$(NC)"
 
 re: fclean all
 
