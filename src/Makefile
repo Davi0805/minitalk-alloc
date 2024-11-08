@@ -6,7 +6,10 @@ LIBFTNAME = libftprintf.a
 LIBFTDIR = ../print_functions
 FLAGS = -Wall -Wextra -Werror
 OBJS = $(SRCS:.c=.o)
-SRCS = server.c client.c utils.c\
+SRCS = server.c client.c utils.c
+BONUS_SRCS = server_bonus.c client_bonus.c utils_bonus.c
+BONUS_OBJS = $(BONUS_SRCS:.c=.o)
+
 
 GREEN = \033[0;32m
 YELLOW = \033[1;33m
@@ -25,6 +28,12 @@ mandatory: $(NAME) $(OBJS)
 	@echo "# $(GREEN)Building project...$(NC)"
 	@$(CC) $(FLAGS) -fsanitize=undefined -o client client.o utils.o $(NAME)
 	@$(CC) $(FLAGS) -fsanitize=undefined -o server server.o utils.o $(NAME)
+	@echo "$(GREEN)Done!$(NC)"
+
+bonus: $(NAME) $(BONUS_OBJS)
+	@echo "# $(GREEN)Building project...$(NC)"
+	@$(CC) $(FLAGS) -fsanitize=undefined -o client client_bonus.o utils.o $(NAME)
+	@$(CC) $(FLAGS) -fsanitize=undefined -o server server_bonus.o utils.o $(NAME)
 	@echo "$(GREEN)Done!$(NC)"
 
 %.o: %.c
